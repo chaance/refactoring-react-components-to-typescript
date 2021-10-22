@@ -1,0 +1,66 @@
+.ms--windows--box {
+	--border-size: var(--border-2);
+	border: var(--border-size) solid var(--color-gray-10);
+	border-top-color: var(--color-gray-05);
+	border-left-color: var(--color-gray-05);
+	background: var(--color-gray-07);
+
+	&:where([data-inset]) {
+		border-color: var(--color-gray-05);
+		border-top-color: var(--color-gray-10);
+		border-left-color: var(--color-gray-10);
+	}
+
+	&:where([data-depth="2"]) {
+		--border-size: var(--border-2);
+	}
+
+	&:where([data-depth="3"]) {
+		--border-size: var(--border-3);
+	}
+
+	&:where([data-depth="4"]) {
+		--border-size: var(--border-4);
+	}
+}
+
+.ms--windows--window {
+	padding: var(--border-2);
+}
+
+.ms--windows--window-body {
+	padding: var(--spacing-03);
+	padding-top: var(--spacing-05);
+}
+
+.ms--windows--window-header {
+	--button-size: 24px;
+	--p: var(--spacing-01);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: var(--spacing-02);
+	flex: 0 1 100%;
+	background: linear-gradient(to right, #020071, #1784d6);
+	padding: var(--p);
+	height: calc(var(--button-size) + var(--p) * 2);
+	line-height: 1;
+	color: var(--color-white);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-weight: bold;
+}
+
+.ms--windows--close-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: var(--button-size);
+	height: var(--button-size);
+	padding: 0;
+
+	@nest :where(& > *) {
+		width: calc(var(--button-size) - var(--border-size) * 2);
+	}
+}

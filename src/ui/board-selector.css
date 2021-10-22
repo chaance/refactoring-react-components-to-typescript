@@ -1,0 +1,12 @@
+.ms--board-selector {
+	z-index: 1;
+}
+
+.ms--board-selector__header {}
+
+.ms--board-selector__legend {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-weight: bold;
+}

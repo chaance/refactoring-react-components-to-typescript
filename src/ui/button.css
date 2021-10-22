@@ -1,0 +1,21 @@
+.ms--button {
+	--border-size: var(--border-2);
+	appearance: none;
+	padding: var(--spacing-01) var(--spacing-02);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	color: var(--color-black);
+	border: var(--border-size) solid var(--color-gray-05);
+	border-bottom-color: var(--color-gray-09);
+	border-right-color: var(--color-gray-09);
+	background: var(--color-gray-07);
+
+	&:where(:active:not([data-meta-pressed])) {
+		background-color: var(--color-gray-08);
+		border-color: var(--color-gray-05);
+		border-top-color: var(--color-gray-09);
+		border-left-color: var(--color-gray-09);
+	}
+}

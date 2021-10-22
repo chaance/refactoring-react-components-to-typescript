@@ -1,0 +1,26 @@
+.ms--count-display {
+	--y-offset: 4px;
+	--x-offset: 2px;
+	position: relative;
+	font-family: var(--font-clock);
+	font-size: 28px;
+	padding: var(--x-offset) var(--y-offset);
+	background: var(--color-black);
+	color: var(--color-clock-text);
+	width: calc(3ch + var(--y-offset) * 2);
+	text-align: right;
+	user-select: none;
+	line-height: 1;
+
+	/* minor adjustment because fonts goes brrrr */
+	padding-bottom: calc(var(--x-offset) - 1px);
+
+	/* Creates the dimmed number effect in the background */
+	&::before {
+		content: "888";
+		position: absolute;
+		opacity: 0.35;
+		top: var(--x-offset);
+		left: var(--y-offset);
+	}
+}

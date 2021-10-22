@@ -1,0 +1,105 @@
+.ms--board {
+	display: flex;
+	justify-content: center;
+}
+
+.ms--board__header-wrapper {
+	margin-bottom: var(--spacing-02);
+}
+
+.ms--board__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: var(--spacing-02);
+	padding: var(--spacing-02);
+}
+
+.ms--board__menu {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: var(--spacing-03);
+	padding: var(--spacing-02) var(--spacing-02);
+	line-height: 1;
+
+	& > *:first-letter {
+		text-decoration: underline;
+		text-underline-offset: 1px;
+	}
+}
+
+.ms--board__grid-wrapper {
+	padding: var(--spacing-02);
+}
+
+.ms--board__grid {
+	--cell-size: 24px;
+	/*
+	TODO: In an ideal world, we could use CSS grid because this is, well, it's a
+	freaking grid. But we need "row" elements when using role="grid", which means
+	we'd need `display: contents` to not be a buggy mess for various assistive
+	devices (cough cough VoiceOver + Safari cough). If this ever gets properly
+	addressed it'd be nice to just do it that way, but in the mean time we'll just
+	use flex and set the cell sizes on the cell elements directly.
+
+	display: flex; grid-template-columns: repeat(var(--columns),
+	var(--cell-size)); grid-template-rows: repeat(var(--rows), var(--cell-size));
+	*/
+	display: flex;
+	flex: 0 0 100%;
+
+	width: fit-content;
+	margin: auto;
+}
+
+.ms--board__row {
+	/* display: contents; */
+}
+
+.ms--board__cell {
+	display: flex;
+	flex: 1 1 100%;
+	border-bottom: 1px solid var(--color-black);
+	border-right: 1px solid var(--color-black);
+	width: var(--cell-size);
+	height: var(--cell-size);
+
+	&:where([data-revealed]) {
+		border-style: dotted;
+	}
+}
+
+.ms--board__cell-button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: bold;
+	cursor: default;
+	user-select: none;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+
+	&:where([data-revealed]),
+	&:where([data-revealed]:active) {
+		background-color: var(--color-gray-07);
+		border-width: 1px;
+		border-color: var(--color-gray-07);
+		border-top-color: var(--color-gray-10);
+		border-left-color: var(--color-gray-10);
+	}
+}
+
+.ms--board__cell-button[data-status="exploded"] {
+	background-color: var(--color-tile-exploded);
+	border-color: var(--color-tile-exploded-border);
+}
+
+.ms--board__reset-button {
+	padding: 0;
+	width: 32px;
+	height: 32px;
+	user-select: none;
+	font-size: 20px;
+}

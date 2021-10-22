@@ -1,0 +1,17 @@
+.ms--app {
+	display: flex;
+	flex: 1 0 100%;
+	flex-direction: column;
+	min-height: inherit;
+	justify-content: center;
+}
+
+.ms--app__board-selector {
+	--g: var(--spacing-03);
+	--r: calc(var(--g) + env(safe-area-inset-right));
+	position: absolute;
+	bottom: calc(var(--g) + env(safe-area-inset-bottom));
+	right: var(--r);
+	width: 300px;
+	max-width: calc(100% - var(--r) - calc(var(--g) + env(safe-area-inset-left)));
+}
