@@ -5,6 +5,14 @@
 		"checkJs": false,
 		"esModuleInterop": true,
 		"noEmit": true,
-		"jsx": "preserve"
+		"jsx": "preserve",
+
+		// NOTE: I did not go over the following options in the course, but check
+		//       out the docs if you're curious!
+		//       https://www.typescriptlang.org/tsconfig
+		"target": "ESNext",
+		"lib": ["DOM", "DOM.Iterable", "ESNext"],
+		"module": "ESNext",
+		"moduleResolution": "Node"
 	}
 }

@@ -1,6 +1,18 @@
 export class Cell {
-	constructor(cell, data) {
-		let cellData;
+	index: number;
+	status: CellStatus;
+	row: number;
+	column: number;
+
+	private __board: BoardConfig;
+	private __mines: number[];
+
+	constructor(cell: Cell);
+	constructor(cell: Cell, data: Partial<CellData>);
+	constructor(data: CellData);
+
+	constructor(cell: CellData | Cell, data?: Partial<CellData>) {
+		let cellData: CellData;
 		if (cell instanceof Cell) {
 			cellData = {
 				index: cell.index,
@@ -25,7 +37,7 @@ export class Cell {
 		return this.__mines ? this.__mines.includes(this.index) : false;
 	}
 
-	get adjacentIndexMatrix() {
+	get adjacentIndexMatrix(): (number | null)[] {
 		let board = this.__board;
 		let row = this.row;
 		let column = this.column;
@@ -76,3 +88,18 @@ function getIndexByRowAndColumn({ board, row, column }) {
 	}
 	return row * board.columns + column;
 }
+
+interface BoardConfig {
+	rows: number;
+	columns: number;
+	mines: number;
+}
+
+interface CellData {
+	index: number;
+	board: BoardConfig;
+	mines: number[];
+	status?: CellStatus;
+}
+
+type CellStatus = "hidden" | "flagged" | "question" | "revealed" | "exploded";

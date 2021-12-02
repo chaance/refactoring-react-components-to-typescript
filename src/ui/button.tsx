@@ -2,7 +2,7 @@ import * as React from "react";
 import cx from "clsx";
 import { scope } from "../lib/utils";
 
-const Button = React.forwardRef(
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 	(
 		{
 			children,
@@ -52,5 +52,9 @@ const Button = React.forwardRef(
 );
 
 Button.displayName = "Button";
+
+interface ButtonProps extends React.ComponentPropsWithRef<"button"> {}
+
+export type { ButtonProps };
 
 export { Button };
