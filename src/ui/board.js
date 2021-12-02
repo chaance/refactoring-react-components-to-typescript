@@ -14,6 +14,8 @@ const initialContext = {
 	initialized: false,
 };
 
+// type GameState = "idle" | "active" | "won" | "lost";
+
 function reducer(context, event) {
 	if (event.type === "RESET") {
 		return {
@@ -74,8 +76,8 @@ function reducer(context, event) {
 			switch (event.type) {
 				case "REVEAL_CELL": {
 					let mines = context.mines;
-					let cells = context.cells;
-					let gameState = context.gameState;
+					let currentCells = context.cells;
+					let currentState = context.gameState;
 
 					// The user can begin the game befopre initializing the board. For
 					// example, they may start by first flagging a cell, which will start
@@ -89,15 +91,15 @@ function reducer(context, event) {
 							initialCellIndex: event.index,
 							maxMines: getMaxMines(context.cells),
 						});
-						cells = addMinesToCells(cells, event.board, mines);
+						currentCells = addMinesToCells(currentCells, event.board, mines);
 					}
 
-					[gameState, cells] = selectCell(
+					let [gameState, cells] = selectCell(
 						event.index,
-						cells,
+						currentCells,
 						mines,
 						event.board,
-						gameState
+						currentState
 					);
 					return {
 						...context,
@@ -202,6 +204,12 @@ function reducer(context, event) {
 	return context;
 }
 
+// interface BoardConfig {
+// 	rows: number;
+// 	columns: number;
+// 	mines: number;
+// }
+
 const Board = ({ board = presets.Beginner }) => {
 	let [{ gameState, cells, mines }, send] = React.useReducer(
 		reducer,
@@ -240,6 +248,19 @@ const Board = ({ board = presets.Beginner }) => {
 	}, [board, reset]);
 
 	let remainingMineCount = getRemainingMineCount(cells, board.mines);
+
+	let rowArray = React.useMemo(
+		() => Array(board.rows).fill(null),
+		[board.rows]
+	);
+	let getColumnArray = React.useCallback(
+		(rowIndex) =>
+			cells.slice(
+				board.columns * rowIndex,
+				board.columns * rowIndex + board.columns
+			),
+		[board.columns, cells]
+	);
 
 	return (
 		<div className={scope("board")}>
@@ -282,60 +303,49 @@ const Board = ({ board = presets.Beginner }) => {
 						role="grid"
 						aria-label="Game board"
 					>
-						{Array(board.rows)
-							.fill(null)
-							.map((_, rowIndex) => {
-								return (
-									<div
-										className={scope("board__row")}
-										role="row"
-										key={rowIndex}
-									>
-										{cells
-											.slice(
-												board.columns * rowIndex,
-												board.columns * rowIndex + board.columns
-											)
-											.map((cell, i) => {
-												let hasMine = mines.includes(cell.index);
-												return (
-													<GridCell
-														key={i}
-														status={cell.status}
-														gameState={gameState}
-														handleMark={() => {
-															send({
-																type: "MARK_CELL",
-																index: cell.index,
-																board: board,
-															});
-														}}
-														handleSingleCellSelect={() => {
-															send({
-																type: "REVEAL_CELL",
-																index: cell.index,
-																board: board,
-															});
-														}}
-														handleAdjacentCellsSelect={() => {
-															send({
-																type: "REVEAL_ADJACENT_CELLS",
-																index: cell.index,
-																board: board,
-															});
-														}}
-													>
-														<GridCellIcon
-															status={cell.status}
-															mineValue={cell.adjacentMineCount}
-															hasMine={hasMine}
-														/>
-													</GridCell>
-												);
-											})}
-									</div>
-								);
-							})}
+						{rowArray.map((_, rowIndex) => {
+							return (
+								<div className={scope("board__row")} role="row" key={rowIndex}>
+									{getColumnArray(rowIndex).map((cell, i) => {
+										let hasMine = mines.includes(cell.index);
+										return (
+											<GridCell
+												key={i}
+												status={cell.status}
+												gameState={gameState}
+												handleMark={() => {
+													send({
+														type: "MARK_CELL",
+														index: cell.index,
+														board: board,
+													});
+												}}
+												handleSingleCellSelect={() => {
+													send({
+														type: "REVEAL_CELL",
+														index: cell.index,
+														board: board,
+													});
+												}}
+												handleAdjacentCellsSelect={() => {
+													send({
+														type: "REVEAL_ADJACENT_CELLS",
+														index: cell.index,
+														board: board,
+													});
+												}}
+											>
+												<GridCellIcon
+													status={cell.status}
+													mineValue={cell.adjacentMineCount}
+													hasMine={hasMine}
+												/>
+											</GridCell>
+										);
+									})}
+								</div>
+							);
+						})}
 					</WindowsBox>
 				</WindowsBox>
 			</WindowsWindow>
@@ -545,7 +555,7 @@ function getCellCount(board) {
  *   columns: number;
  *   mines: number;
  * }} board
- * @param {number[]} mines
+ * @param {number[]} [mines]
  * @returns {Cell[]}
  */
 function createCells(board, mines) {
@@ -634,7 +644,19 @@ function toggleCellFlags(cell) {
 	});
 }
 
-// TODO: .................. 🤷‍♂️
+/**
+ *
+ * @param {number} cellIndex
+ * @param {Cell[]} cells
+ * @param {number[]} mines
+ * @param {{
+ *   rows: number;
+ *   columns: number;
+ *   mines: number;
+ * }} board
+ * @param {"idle" | "active" | "won" | "lost"} startingState
+ * @returns {["idle" | "active" | "won" | "lost", Cell[]]}
+ */
 function selectCell(cellIndex, cells, mines, board, startingState) {
 	let cellsCopy = [...cells];
 	let cell = cellsCopy[cellIndex];
@@ -689,10 +711,18 @@ function selectCell(cellIndex, cells, mines, board, startingState) {
 	return [gameState, cellsCopy];
 }
 
+/**
+ * @param {Cell[]} cells
+ * @returns
+ */
 function getMaxMines(cells) {
 	return cells.length - 1;
 }
 
+/**
+ * @param {Cell[]} cells
+ * @returns {number}
+ */
 function getTotalRevealedCells(cells) {
 	return cells.reduce((count, cell) => {
 		if (cell.status === "revealed") {
@@ -702,6 +732,10 @@ function getTotalRevealedCells(cells) {
 	}, 0);
 }
 
+/**
+ * @param {"idle" | "active" | "won" | "lost"} gameState
+ * @returns {[number, () => void]}
+ */
 function useTimer(gameState) {
 	let [timeElapsed, setTimeElapsed] = React.useState(0);
 	React.useEffect(() => {
