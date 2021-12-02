@@ -1,8 +1,12 @@
 {
-	"name": "minesweeper",
+	"name": "refactoring-react-components-to-typescript",
 	"private": true,
 	"version": "0.0.0",
 	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/chaance/refactoring-react-components-to-typescript"
+	},
 	"scripts": {
 		"dev:js": "rollup -c rollup.config.js --watch",
 		"dev:css": "postcss ./src/styles/index.css --output ./dist/styles.css --watch",
