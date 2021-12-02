@@ -7,12 +7,6 @@ import { scope } from "../lib/utils";
 import { WindowsWindow, WindowsBox, WindowsWindowHeader } from "./windows-ui";
 import { CountDisplay } from "./count-display";
 
-// TODO: Screen reader testing
-// TODO: Browser testing
-// TODO: Keyboard grid navigation
-// TODO: Optimize algorithms, some of these functions are a bit smelly still!
-// TODO: Fix loading jank
-
 const initialContext = {
 	gameState: "idle",
 	cells: [],
@@ -494,6 +488,14 @@ const ResetButton = ({ handleReset, gameState }) => {
 	);
 };
 
+/**
+ * @param {{
+ *   totalMines: number;
+ *   maxMines: number;
+ *   initialCellIndex: number;
+ * }} args
+ * @returns {number[]}
+ */
 function initMines({ totalMines, maxMines, initialCellIndex }) {
 	let mines = [];
 	let minesToAssign = Array(totalMines).fill(null);
@@ -511,6 +513,11 @@ function initMines({ totalMines, maxMines, initialCellIndex }) {
 	return mines;
 }
 
+/**
+ * @param {Cell[]} cells
+ * @param {number} totalMines
+ * @returns {number}
+ */
 function getRemainingMineCount(cells, totalMines) {
 	return (
 		totalMines -
@@ -520,10 +527,27 @@ function getRemainingMineCount(cells, totalMines) {
 	);
 }
 
+/**
+ * @param {{
+ *   rows: number;
+ *   columns: number;
+ *   mines: number;
+ * }} board
+ * @returns {number}
+ */
 function getCellCount(board) {
 	return board.columns * board.rows;
 }
 
+/**
+ * @param {{
+ *   rows: number;
+ *   columns: number;
+ *   mines: number;
+ * }} board
+ * @param {number[]} mines
+ * @returns {Cell[]}
+ */
 function createCells(board, mines) {
 	return Array(getCellCount(board))
 		.fill(null)
@@ -537,14 +561,41 @@ function createCells(board, mines) {
 		});
 }
 
+/**
+ * @param {{
+ *   rows: number;
+ *   columns: number;
+ *   mines: number;
+ * }} board
+ * @returns {Cell[]}
+ */
 function resetCells(board) {
 	return createCells(board);
 }
 
+/**
+ * @param {{
+ *   rows: number;
+ *   columns: number;
+ *   mines: number;
+ * }} board
+ * @param {number[]} mines
+ * @returns {Cell[]}
+ */
 function initCells(board, mines) {
 	return createCells(board, mines);
 }
 
+/**
+ * @param {Cell[]} cells
+ * @param {{
+ *   rows: number;
+ *   columns: number;
+ *   mines: number;
+ * }} board
+ * @param {number[]} mines
+ * @returns {Cell[]}
+ */
 function addMinesToCells(cells, board, mines) {
 	return Array(getCellCount(board))
 		.fill(null)
@@ -558,12 +609,20 @@ function addMinesToCells(cells, board, mines) {
 		});
 }
 
+/**
+ * @param {Cell} cell
+ * @returns {Cell}
+ */
 function flagCell(cell) {
 	return new Cell(cell, {
 		status: "flagged",
 	});
 }
 
+/**
+ * @param {Cell} cell
+ * @returns {Cell}
+ */
 function toggleCellFlags(cell) {
 	return new Cell(cell, {
 		status:
