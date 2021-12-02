@@ -29,7 +29,7 @@ class Counter extends React.Component {
 
 	render() {
 		return (
-			<div>
+			<div className={this.props.className}>
 				<button type="button" onClick={this.decrement} aria-label="Decrement">
 					-
 				</button>
@@ -50,6 +50,8 @@ function shallowCompare(instance, nextProps, nextState) {
 		!shallowEqual(instance.state, nextState)
 	);
 }
+
+let hasOwnProperty = Object.prototype.hasOwnProperty;
 
 function shallowEqual(objA, objB) {
 	if (is(objA, objB)) {
