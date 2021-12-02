@@ -7,12 +7,6 @@ import { scope } from "../lib/utils";
 import { WindowsWindow, WindowsBox, WindowsWindowHeader } from "./windows-ui";
 import { CountDisplay } from "./count-display";
 
-// TODO: Screen reader testing
-// TODO: Browser testing
-// TODO: Keyboard grid navigation
-// TODO: Optimize algorithms, some of these functions are a bit smelly still!
-// TODO: Fix loading jank
-
 const initialContext = {
 	gameState: "idle",
 	cells: [],
