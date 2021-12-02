@@ -2,8 +2,6 @@ import * as React from "react";
 import cx from "clsx";
 import { scope } from "../lib/utils";
 
-// TODO: Styles
-
 const RadioGroupContext = React.createContext(null);
 
 const RadioGroup = ({ children, checked, onChange, name }) => {
@@ -26,8 +24,8 @@ const Radio = ({ children, id, value }) => {
 
 const RadioInput = React.forwardRef(
 	({ children, className, ...props }, forwardedRef) => {
-		let { id, value } = useRadioContext("RadioInput");
-		let { checked, onChange, name } = useRadioGroupContext("RadioInput");
+		let { id, value } = React.useContext(RadioContext);
+		let { checked, onChange, name } = React.useContext(RadioGroupContext);
 
 		return (
 			<input
@@ -56,7 +54,7 @@ RadioInput.displayName = "RadioInput";
 
 const RadioLabel = React.forwardRef(
 	({ children, className, ...props }, forwardedRef) => {
-		let { id } = useRadioContext("RadioLabel");
+		let { id } = React.useContext(RadioContext);
 		return (
 			<label
 				{...props}
@@ -73,19 +71,3 @@ const RadioLabel = React.forwardRef(
 RadioLabel.displayName = "RadioLabel";
 
 export { RadioGroup, Radio, RadioInput, RadioLabel };
-
-function useRadioContext(name) {
-	let ctx = React.useContext(RadioContext);
-	if (!ctx) {
-		throw Error(`A ${name} was rendered outside of a Radio component.`);
-	}
-	return ctx;
-}
-
-function useRadioGroupContext(name) {
-	let ctx = React.useContext(RadioGroupContext);
-	if (!ctx) {
-		throw Error(`A ${name} was rendered outside of a RadioGroup component.`);
-	}
-	return ctx;
-}
