@@ -1,0 +1,14 @@
+{
+    "include": ["./src"],
+		  "compilerOptions": {
+          "target": "ES6",
+          "sourceMap": true,
+          "outDir": "dist",
+					"allowJs": true,
+					"checkJs": false,
+					"esModuleInterop": false,
+					"noEmitHelpers": true,
+					"jsx":"preserve"
+        }
+
+}

@@ -6,7 +6,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import replace from "@rollup/plugin-replace";
 
 const config = {
-	input: "src/main.tsx",
+	input: "src/main.",
 	output: {
 		file: "dist/bundle.js",
 		format: "iife",
@@ -14,14 +14,14 @@ const config = {
 	},
 	plugins: [
 		nodeResolve({
-			extensions: [".js", ".ts", ".tsx"],
+			extensions: [".js"],
 		}),
 		replace({
 			preventAssignment: true,
 			"process.env.NODE_ENV": JSON.stringify("development"),
 		}),
 		babel({
-			extensions: [".js", ".ts", ".tsx"],
+			extensions: [".js"],
 			babelHelpers: "bundled",
 			presets: [
 				[
@@ -31,7 +31,6 @@ const config = {
 					},
 				],
 				"@babel/preset-react",
-				"@babel/preset-typescript"
 			],
 			env: {
 				development: {

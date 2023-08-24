@@ -14,7 +14,7 @@ const config = {
 	},
 	plugins: [
 		nodeResolve({
-			extensions: [".js", ".ts", ".tsx"],
+			extensions: [".js", ".jsx", ".ts", ".tsx"],
 		}),
 		replace({
 			preventAssignment: true,

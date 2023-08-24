@@ -1,0 +1,14 @@
+{
+    "include": ["./src"],
+		  "compilerOptions": {
+          "target": "es5",
+          "module": "commonjs",
+          "sourceMap": true,
+          "outDir": "dist",
+					
+					"checkJs": false,
+					"noEmitHelpers": true,
+					"jsx":"preserve"
+        }
+
+}

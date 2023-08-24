@@ -14,14 +14,14 @@ const config = {
 	},
 	plugins: [
 		nodeResolve({
-			extensions: [".js", ".ts", ".tsx"],
+			extensions: [".js", ".jsx", ".],
 		}),
 		replace({
 			preventAssignment: true,
 			"process.env.NODE_ENV": JSON.stringify("development"),
 		}),
 		babel({
-			extensions: [".js", ".ts", ".tsx"],
+			extensions: [".js"],
 			babelHelpers: "bundled",
 			presets: [
 				[
@@ -31,7 +31,6 @@ const config = {
 					},
 				],
 				"@babel/preset-react",
-				"@babel/preset-typescript"
 			],
 			env: {
 				development: {
